@@ -183,8 +183,10 @@ If you include this element as part of `paper-dialog`, use the class
       <div id="heading">
         <iron-selector class="time" selectable="[name]" attr-for-selected="name" selected="{{view}}">
           <div name="hours" class="hour">{{hour12}}</div>
-          <div class="sep">:</div>
-          <div name="minutes" class="minute">{{_zeroPad(minute, 2)}}</div>
+          <template is="dom-if" if="[[ enableMinutes ]]">
+            <div class="sep">:</div>
+            <div name="seconds" class="minute">{{_zeroPad(minute, 2)}}</div>
+          </template>
           <template is="dom-if" if="[[ enableSeconds ]]">
             <div class="sep">:</div>
             <div name="seconds" class="second">{{_zeroPad(second, 2)}}</div>
@@ -203,10 +205,12 @@ If you include this element as part of `paper-dialog`, use the class
               <paper-clock-selector class="clock" id="hourClock" count="12" step="1"
                 animated="[[animated]]" selected="{{hour12}}"></paper-clock-selector> 
             </neon-animatable>
-            <neon-animatable class="clock-animatable" name="minutes">
-              <paper-clock-selector class="clock" id="minuteClock" count="60" step="5"
-                animated="[[animated]]" use-zero zero-pad selected="{{minute}}"></paper-clock-selector> 
-            </neon-animatable>
+            <template is="dom-if" if="[[ enableMinutes ]]">
+              <neon-animatable class="clock-animatable" name="minutes">
+                <paper-clock-selector class="clock" id="minuteClock" count="60" step="5"
+                  animated="[[animated]]" use-zero zero-pad selected="{{minute}}"></paper-clock-selector> 
+              </neon-animatable>
+            </template>
             <template is="dom-if" if="[[ enableSeconds ]]">
               <neon-animatable class="clock-animatable" name="seconds">
                 <paper-clock-selector class="clock" id="secondClock" count="60" step="5"
@@ -335,6 +339,10 @@ If you include this element as part of `paper-dialog`, use the class
           enableSeconds: {
             type: Boolean,
             value: false
+          },
+          enableMinutes: {
+            type: Boolean,
+            value: true
           },
           _queryMatches: {
             type: Boolean,
@@ -511,7 +519,7 @@ If you include this element as part of `paper-dialog`, use the class
           }.bind(this));
         },
         _onClockSelected: function(event) {
-          if (this.view === 'hours') {
+          if (this.view === 'hours' && this.enableMinutes) {
 
             var showMinutes = function() {
               this.async(function() {
