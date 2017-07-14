@@ -185,7 +185,7 @@ If you include this element as part of `paper-dialog`, use the class
           <div name="hours" class="hour">{{hour12}}</div>
           <template is="dom-if" if="[[ enableMinutes ]]">
             <div class="sep">:</div>
-            <div name="seconds" class="minute">{{_zeroPad(minute, 2)}}</div>
+            <div name="minutes" class="minute">{{_zeroPad(minute, 2)}}</div>
           </template>
           <template is="dom-if" if="[[ enableSeconds ]]">
             <div class="sep">:</div>
